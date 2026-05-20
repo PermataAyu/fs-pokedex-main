@@ -1,4 +1,3 @@
-const js = require('@eslint/js')
 const react = require('eslint-plugin-react')
 const jest = require('eslint-plugin-jest')
 const globals = require('globals')
@@ -12,30 +11,6 @@ module.exports = [
       'node_modules/**',
       'dist/**'
     ]
-  },
-  js.configs.recommended,
-  {
-    files: ['app.js'],
-    languageOptions: {
-      ecmaVersion: 2018,
-      sourceType: 'commonjs',
-      globals: {
-        ...globals.node,
-        ...globals.browser,
-        ...globals.jest
-      }
-    },
-    rules: {
-      'indent': ['error', 2],
-      'linebreak-style': ['error', 'unix'],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'never'],
-      'eqeqeq': 'error',
-      'no-trailing-spaces': 'error',
-      'object-curly-spacing': ['error', 'always'],
-      'arrow-spacing': ['error', { 'before': true, 'after': true }],
-      'no-console': 0
-    }
   },
   {
     files: ['src/**/*.{js,jsx}', 'test/**/*.{js,jsx}'],
