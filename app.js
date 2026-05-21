@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5001
 app.use(express.static('dist'))
 
 const start = async () => {
-  await app.listen(PORT)
+  await app.listen(PORT+1)
   console.log(`server started on port ${PORT}`)
 }
 
