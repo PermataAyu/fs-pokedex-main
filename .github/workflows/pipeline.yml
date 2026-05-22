@@ -27,10 +27,39 @@ jobs:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy on fly.io
-        if: ${{ github.event_name == 'push'}}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Discord success info
+        if: ${{ failure() }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          content: ":x: **Build Failed!** The pipeline encountered an errror"
+          title: "Failure Details" 
+          description: |
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.event.commits.id }}
+            Message: ${{ github.event.commits.message }}
+            Author: ${{ github.event.commits.author.name }}
+            Workflow: ${{ github.workflow }}
+            Job: ${{ github.job }}
+
+            [View Commit](${{ github.event.commits.url}})
+            [View Workflow Run](https://github.com/PermataAyu/fs-pokedex-main/actions/runs/${{github.run_id}})
+      - name: Discord fail info
+        if: ${{ success()}}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          content: ":white_check_mark: **Deployment Successfull!** A new version deployed to production"
+          title: Deployment Details
+          description: |
+            Commit: ${{ github.event.commits.id }}
+            Message: ${{ github.event.commits.message }}
+            Author: ${{ github.event.commits.author.name }}
   tag_releases:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
@@ -38,6 +67,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
       - name: Bump version and push tag
+        if: ${{ !contains(join(github.event.commits.*.message), '#skip') }}
         uses: anothrNick/github-tag-action@1.75.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
