@@ -57,7 +57,7 @@ jobs:
           content: ":white_check_mark: **Deployment Successfull!** A new version deployed to production"
           title: Deployment Details
           description: |
-            Commit: ${{ github.event.commits.id }}
+            Commit: ${{ toJson(github.event.commits.id) }}
             Message: ${{ github.event.commits.message }}
             Author: ${{ github.event.commits.author.name }}
   tag_releases:
