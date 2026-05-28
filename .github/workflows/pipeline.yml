@@ -88,7 +88,7 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           nodetail: true
           content: ":white_check_mark: **Deployment Successfull!** A new version deployed to production"
-          title: "[Deployment Details](${{join(github.event.commits.*.url)}})"
+          title: Deployment Details
           description: |
             Commit: ${{ join(github.event.commits.*.id) }}
             Message: ${{ join(github.event.commits.*.message) }}

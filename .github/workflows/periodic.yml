@@ -1,0 +1,12 @@
+name: Periodic Ping
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * *'
+
+jobs:
+  ping_server:
+    runs-on: ubuntu-latest
+    steps:
+      - run: ping https://pokeapi.co/api/v2/pokemon/
