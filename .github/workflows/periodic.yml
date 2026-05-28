@@ -9,4 +9,4 @@ jobs:
   ping_server:
     runs-on: ubuntu-latest
     steps:
-      - run: ping https://pokeapi.co/api/v2/pokemon/
+      - run: ping "https://pokeapi.co/api/v2/pokemon/"
